@@ -231,7 +231,7 @@ function addOrg(){const n=$('#no').value.trim();if(n.length<2)return $('#ferr').
 function loadUsers(){act(async()=>{S.users=await API('users');side()})}
 function usr(){if(!S.users)return '<p class="mut">Carregando usuários…</p>';return `<h2>Usuários</h2><p class="mut">Altere o perfil de acesso. Operadores precisam de uma organização.</p>${S.users.map((u,i)=>`<div class="it" style="--c:var(--g)"><b>${esc(u.nome)}</b><span>${esc(u.email||'')}</span><div class="g2"><select id="ur${i}" aria-label="Perfil">${opt(Object.entries(LB),u.role)}</select><select id="uo${i}" aria-label="Organização"><option value="">Sem organização</option>${orgs().map(o=>`<option ${u.org==o?'selected':''}>${esc(o)}</option>`).join('')}</select></div><button class="b s" style="margin-top:6px" onclick="setRole(${i})">Salvar</button></div>`).join('')}`}
 function setRole(i){const u=S.users[i],r=$('#ur'+i).value,o=$('#uo'+i).value;if(r=='o'&&!o)return toast('Escolha a organização do operador.');act(async()=>{S.users=await API('setrole',{id:u.id,role:r,org:o});side();toast('Perfil atualizado.')})}
-/* ---------- início ---------- */
+/* ---------- início ---------- *
 (async()=>{try{setUser((await API('me')).user)}catch(_){}await poll();R();setInterval(poll,6000)})();
 </script>
 </body>
